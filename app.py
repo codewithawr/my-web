@@ -8,22 +8,28 @@ import os
 
 path = os.getcwd()
 print(os)
+
+
+settings_path = 'Crypto_price\\settings\\crypto.txt'
+
+
 def get_crypto_list():
-    with open(settings_path) as f:
-        crypto_options = f.readline().split(',')
+    # with open(settings_path) as f:
+    #     crypto_options = f.readline().split(',')
+    crypto_options=['ETH', 'BTC']
     crypto_url = []
     for i in crypto_options:
         crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/my-web/main/Crypto_price/crypto/{i}_data.csv'})
 
     return crypto_url
 def up_crypto():
-    with open(settings_path) as f:
-        CRYPTOS = f.readline().split(',')
+    # with open(settings_path) as f:
+    #     CRYPTOS = f.readline().split(',')
+    CRYPTOS=['ETH', 'BTC']
     CURRENCY = 'USD'
     for CRYPTO in CRYPTOS:
         suced = write_crypto_data(CRYPTO, CURRENCY)
 
-settings_path = 'Crypto_price\\settings\\crypto.txt'
     
 scheduler = APScheduler()
 scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
