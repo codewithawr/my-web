@@ -46,6 +46,6 @@ if __name__ == '__main__':
     scheduler = APScheduler()
     scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
     scheduler.start()
-    app.run(port = int(os.getenv('PORT')))
+    app.run()
 
     
