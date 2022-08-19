@@ -27,16 +27,17 @@ def index(path):
 #     return jsonify({'data':data})
 
 if __name__ == '__main__':
-    os.chdir(r'C:\Users\PunjabLab3078779971\Desktop\Cripto_API\Crypto_price')
+    settings_path = 'Crypto_price\\settings\\crypto.txt'
     def get_crypto_list():
-        with open('settings\\crypto.txt') as f:
+        with open(settings_path) as f:
             crypto_options = f.readline().split(',')
         crypto_url = []
         for i in crypto_options:
-            crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/Crypto_price/main/crypto/{i}_data.csv'})
+            crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/my-web/main/Crypto_price/crypto/{i}_data.csv'})
+
         return crypto_url
     def up_crypto():
-        with open('settings//crypto.txt') as f:
+        with open(settings_path) as f:
             CRYPTOS = f.readline().split(',')
         CURRENCY = 'USD'
         for CRYPTO in CRYPTOS:
