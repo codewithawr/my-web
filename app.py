@@ -1,4 +1,3 @@
-
 from Crypto_price.data_colector import write_crypto_data
 from flask import Flask
 from flask import render_template_string
