@@ -5,6 +5,20 @@ from Crypto_price.templates.Crypto_home import index_tm
 import os
 from flask_apscheduler import APScheduler
 
+def get_crypto_list():
+    with open(settings_path) as f:
+        crypto_options = f.readline().split(',')
+    crypto_url = []
+    for i in crypto_options:
+        crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/my-web/main/Crypto_price/crypto/{i}_data.csv'})
+
+    return crypto_url
+def up_crypto():
+    with open(settings_path) as f:
+        CRYPTOS = f.readline().split(',')
+    CURRENCY = 'USD'
+    for CRYPTO in CRYPTOS:
+        suced = write_crypto_data(CRYPTO, CURRENCY)
 
 app=Flask(__name__,template_folder='templates')
 
@@ -28,20 +42,7 @@ def index(path):
 
 if __name__ == '__main__':
     settings_path = 'Crypto_price\\settings\\crypto.txt'
-    def get_crypto_list():
-        with open(settings_path) as f:
-            crypto_options = f.readline().split(',')
-        crypto_url = []
-        for i in crypto_options:
-            crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/my-web/main/Crypto_price/crypto/{i}_data.csv'})
-
-        return crypto_url
-    def up_crypto():
-        with open(settings_path) as f:
-            CRYPTOS = f.readline().split(',')
-        CURRENCY = 'USD'
-        for CRYPTO in CRYPTOS:
-            suced = write_crypto_data(CRYPTO, CURRENCY)
+    
 
     scheduler = APScheduler()
     scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
