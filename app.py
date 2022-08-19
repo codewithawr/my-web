@@ -4,7 +4,10 @@ from flask import render_template_string
 from Crypto_price.templates.Crypto_home import index_tm
 from flask_apscheduler import APScheduler
 
+import os
 
+path = os.getcwd()
+print(os)
 def get_crypto_list():
     with open(settings_path) as f:
         crypto_options = f.readline().split(',')
