@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <p>Cripto_Price</p>
+    <div>
+        <p id=p_of>Price of -</p>
+        <p id='price'></p>
+        <div hidden id="evtMsg">0</div>
+    
+        <div id="lineplot"></div>
+        <button id="plot-button" onClick="document.getElementById('evtMsg').innerHTML=100" class="button" style="">Plot</button>
+
+    </div>
+
+    <py-env>
+    - pandas
+    - altair
+    </py-env>
+
+<py-script>
+    from pyodide.http import pyfetch,open_url
+    import asyncio
+    from js import console
+    from time import sleep
+    import pandas
+    import altair as alt
+    from pyodide import create_proxy
+
+    async def get_price(of):
+        # using pyodide for requsting. Only wey workes in PyScript
+        # defining key/request url
+        key = f"https://api.binance.com/api/v3/ticker/price?symbol={of}USDT"
+        data = await pyfetch(url=key, method="GET")
+        data = await data.json()
+        return data
+
+    async def make_requst(url, method, headers=None):
+        if not headers:
+            headers={
+                'X-Requested-With' : 'XMLHttpRequest',
+                'Content-Type' : 'application/json'
+            }
+        
+        responce = await pyfetch(url=url, method= method,headers = headers)
+        return await responce.json()
+
+
+         
+    def Setup_Button_Listeners():
+        btnList = document.querySelectorAll(".button")
+        for i in range(len(btnList)):
+            e = document.getElementById(btnList[i].id)
+            btn_event = create_proxy(Process_Button)
+            e.addEventListener("click", btn_event)
+    #
+    #        
+    async def Process_Button(event):
+        if document.getElementById("evtMsg").innerHTML == '100':        #   button plot_it
+            fig = await plot_it()
+
+
+    async def plot_it():
+        data = await make_requst(url='/ETH', method='GET')
+        data = open_url(data['data'])
+        
+        crypto_data = pandas.read_csv(data)
+
+
+        open_close_color = alt.condition("datum.Open <= datum.Close",alt.value("#06982d"),alt.value("#ae1325"))
+
+        base = alt.Chart(crypto_data).encode(
+            alt.X('Date:T',
+                axis=alt.Axis(
+                    format='%d-%m-%y',
+                    labelAngle=-45,
+                    title='Date in 2009'
+                )
+            ),
+            color=open_close_color
+        )
+
+        rul = base.mark_bar().encode(
+            alt.Y('Open:Q'),
+            alt.Y2('Close:Q')
+        )
+
+        br = base.mark_rule().encode(
+            alt.Y(
+                'Low:Q',
+                title='Price',
+                # scale=alt.Scale(zero=False),
+            ),
+            alt.Y2('High:Q')
+        )
+        bre = rul + br
+        bre.properties(width=900,height=400).interactive()
+        return bre
+    Setup_Button_Listeners()
+</py-script>
+
+</body>
+</html>
