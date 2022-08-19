@@ -2,8 +2,8 @@ from Crypto_price.data_colector import write_crypto_data
 from flask import Flask
 from flask import render_template_string
 from Crypto_price.templates.Crypto_home import index_tm
-import os
 from flask_apscheduler import APScheduler
+
 
 def get_crypto_list():
     with open(settings_path) as f:
@@ -19,6 +19,12 @@ def up_crypto():
     CURRENCY = 'USD'
     for CRYPTO in CRYPTOS:
         suced = write_crypto_data(CRYPTO, CURRENCY)
+
+settings_path = 'Crypto_price\\settings\\crypto.txt'
+    
+scheduler = APScheduler()
+scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
+scheduler.start()
 
 app=Flask(__name__,template_folder='templates')
 
@@ -43,7 +49,6 @@ def index(path):
 if __name__ == '__main__':
     settings_path = 'Crypto_price\\settings\\crypto.txt'
     
-
     scheduler = APScheduler()
     scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
     scheduler.start()
