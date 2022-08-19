@@ -46,6 +46,6 @@ if __name__ == '__main__':
     scheduler = APScheduler()
     scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
     scheduler.start()
-    app.run(debug=False, host="0.0.0.0")
+    app.run()
 
     
