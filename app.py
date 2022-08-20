@@ -6,33 +6,31 @@ from flask_apscheduler import APScheduler
 
 import os
 
-path = os.getcwd()
-print(os)
 
 
 settings_path = 'Crypto_price\\settings\\crypto.txt'
 
+crypto_options=['ETH', 'BTC']
 
 def get_crypto_list():
     # with open(settings_path) as f:
     #     crypto_options = f.readline().split(',')
-    crypto_options=['ETH', 'BTC']
     crypto_url = []
     for i in crypto_options:
         crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/my-web/main/Crypto_price/crypto/{i}_data.csv'})
-
     return crypto_url
-def up_crypto():
+
+def upd_crypto():
+    print('updating')
     # with open(settings_path) as f:
     #     CRYPTOS = f.readline().split(',')
-    CRYPTOS=['ETH', 'BTC']
     CURRENCY = 'USD'
-    for CRYPTO in CRYPTOS:
+    for CRYPTO in crypto_options:
         suced = write_crypto_data(CRYPTO, CURRENCY)
+upd_crypto()
 
-    
 scheduler = APScheduler()
-scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
+scheduler.add_job(func=upd_crypto, trigger='interval', id='job', seconds=43200)
 scheduler.start()
 
 app=Flask(__name__,template_folder='templates')
@@ -56,11 +54,6 @@ def index(path):
 #     return jsonify({'data':data})
 
 if __name__ == '__main__':
-    settings_path = 'Crypto_price\\settings\\crypto.txt'
-    
-    scheduler = APScheduler()
-    scheduler.add_job(func=up_crypto, trigger='interval', id='job', seconds=43200)
-    scheduler.start()
     app.run()
 
     

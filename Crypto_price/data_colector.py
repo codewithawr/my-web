@@ -8,7 +8,7 @@ def write_crypto_data(cryptocurrency, exc_currency):
     This function will check crypto price on yahoofinance.com api
     and write data on csv file if thers any changes
     '''
-    file_path = 'crypto\\' + cryptocurrency + '_data.csv'
+    file_path = 'Crypto_price\\crypto\\' + cryptocurrency + '_data.csv'
     # tring to conectng and faching data from server trying spacific times
     for i in range(19):
         try:

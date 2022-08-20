@@ -2,15 +2,17 @@
 def index_tm(cryptos):
     cryptos_div = ''
     for crypto in cryptos:
-        crypto= dict(crypto)
         cryptos_div = cryptos_div + f'''
 <div>
-    <div><p id = 'name'>{crypto.get("name")}</p> <p id = "price{crypto.get('name')}">--</p></div>
+    <div>
+        <p id = 'name'>{crypto.get("name")}</p>
+        <p id = "price{crypto.get('name')}">--</p>
+    </div>
     <div id= "{crypto.get('name')}"></div>
 </div>
 
-<py-script>
 
+<py-script>
 # importing
 from time import sleep
 # using pyodide for requsting. Only wey workes in PyScript
@@ -23,10 +25,10 @@ while True:
     # requesting data from url using pyfetch
     data = await pyfetch(url=key, method="GET")
     data = await data.json()
-    sleep(2)
     pyscript.write('price{crypto.get('name')}',  data['symbol']+'/'+ data['price'])
 
 </py-script>
+
 
 <py-script output="{crypto.get('name')}">
 
