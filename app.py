@@ -6,15 +6,14 @@ from flask_apscheduler import APScheduler
 
 import os
 
+MYDIR = os.path.dirname(__file__)
 
+settings_path = MYDIR +'/'+'Crypto_price\\settings\\crypto.txt'
 
-settings_path = 'Crypto_price\\settings\\crypto.txt'
-
-crypto_options=['ETH', 'BTC']
 
 def get_crypto_list():
-    # with open(settings_path) as f:
-    #     crypto_options = f.readline().split(',')
+    with open(settings_path) as f:
+        crypto_options = f.readline().split(',')
     crypto_url = []
     for i in crypto_options:
         crypto_url.append({'name': i, 'url':f'https://raw.githubusercontent.com/codewithawr/my-web/main/Crypto_price/crypto/{i}_data.csv'})
@@ -22,8 +21,8 @@ def get_crypto_list():
 
 def upd_crypto():
     print('updating')
-    # with open(settings_path) as f:
-    #     CRYPTOS = f.readline().split(',')
+    with open(settings_path) as f:
+        crypto_options = f.readline().split(',')
     CURRENCY = 'USD'
     for CRYPTO in crypto_options:
         suced = write_crypto_data(CRYPTO, CURRENCY)
