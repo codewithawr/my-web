@@ -8,7 +8,7 @@ import os
 
 MYDIR = os.path.dirname(__file__)
 
-settings_path = MYDIR +'/'+'Crypto_price\\settings\\crypto.txt'
+settings_path = MYDIR +'/'+'Crypto_price/settings/crypto.txt'
 
 
 def get_crypto_list():
@@ -26,7 +26,6 @@ def upd_crypto():
     CURRENCY = 'USD'
     for CRYPTO in crypto_options:
         suced = write_crypto_data(CRYPTO, CURRENCY)
-upd_crypto()
 
 scheduler = APScheduler()
 scheduler.add_job(func=upd_crypto, trigger='interval', id='job', seconds=43200)
