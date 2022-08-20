@@ -13,19 +13,19 @@ def index_tm(cryptos):
 
 
 <py-script>
-# importing
-from time import sleep
-# using pyodide for requsting. Only wey workes in PyScript
-from pyodide.http import pyfetch
-import asyncio
-# defining key/request url
-key = f"https://api.binance.com/api/v3/ticker/price?symbol={crypto.get('name')}USDT"
+    # importing
+    from time import sleep
+    # using pyodide for requsting. Only wey workes in PyScript
+    from pyodide.http import pyfetch
+    import asyncio
+    # defining key/request url
+    key = f"https://api.binance.com/api/v3/ticker/price?symbol={crypto.get('name')}USDT"
 
-while True:
-    # requesting data from url using pyfetch
-    data = await pyfetch(url=key, method="GET")
-    data = await data.json()
-    pyscript.write('price{crypto.get('name')}',  data['symbol']+'/'+ data['price'])
+    while True:
+        # requesting data from url using pyfetch
+        data = await pyfetch(url=key, method="GET")
+        data = await data.json()
+        pyscript.write('price{crypto.get('name')}',  data['symbol']+'/'+ data['price'])
 
 </py-script>
 
