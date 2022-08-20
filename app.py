@@ -26,6 +26,7 @@ def upd_crypto():
     CURRENCY = 'USD'
     for CRYPTO in crypto_options:
         suced = write_crypto_data(CRYPTO, CURRENCY)
+upd_crypto()
 
 scheduler = APScheduler()
 scheduler.add_job(func=upd_crypto, trigger='interval', id='job', seconds=43200)
