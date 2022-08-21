@@ -25,6 +25,7 @@ def upd_crypto():
         crypto_options = f.readline().split(',')
     CURRENCY = 'USD'
     for CRYPTO in crypto_options:
+        print(CRYPTO)
         suced = write_crypto_data(CRYPTO, CURRENCY)
 upd_crypto()
 
