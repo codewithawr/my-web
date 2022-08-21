@@ -3,7 +3,7 @@ def index_tm(cryptos):
     cryptos_div = ''
     for i, crypto in enumerate(cryptos):
         cryptos_div = cryptos_div + f'''
-<div>
+<div id="{i}">
     <div>
         <p id='name'>{crypto.get("name")}</p>
         <p id="Price_{crypto.get('name')}">--</p>
@@ -36,6 +36,9 @@ def index_tm(cryptos):
     bre
 </py-script>
 '''
+    link_ =''
+    for i,v in enumerate([i['name'] for i in cryptos]):
+        link_ = link_+f'<a href= "#{i}">{v}</a><br>'
 
     main = f'''
 <!DOCTYPE html>
@@ -55,7 +58,7 @@ def index_tm(cryptos):
     - pandas
     - altair
     </py-env>
-''' + cryptos_div +f'''
+'''+ link_ + cryptos_div +f'''
 
 <py-script>
 # importing

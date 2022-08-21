@@ -34,7 +34,6 @@ scheduler.start()
 
 app=Flask(__name__,template_folder='templates')
 
-
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def index(path):
