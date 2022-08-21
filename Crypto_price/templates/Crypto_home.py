@@ -1,33 +1,17 @@
 
 def index_tm(cryptos):
     cryptos_div = ''
-    for crypto in cryptos:
+    for i, crypto in enumerate(cryptos):
         cryptos_div = cryptos_div + f'''
 <div>
     <div>
-        <p id = 'name'>{crypto.get("name")}</p>
-        <p id = "price{crypto.get('name')}">--</p>
+        <p id='name'>{crypto.get("name")}</p>
+        <p id="Price_{crypto.get('name')}">--</p>
     </div>
-    <div id= "{crypto.get('name')}"></div>
+    <div id="{crypto.get('name')}"></div>
 </div>
 
 
-<py-script>
-    # importing
-    from time import sleep
-    # using pyodide for requsting. Only wey workes in PyScript
-    from pyodide.http import pyfetch
-    import asyncio
-    # defining key/request url
-    key = f"https://api.binance.com/api/v3/ticker/price?symbol={crypto.get('name')}USDT"
-
-    while True:
-        # requesting data from url using pyfetch
-        data = await pyfetch(url=key, method="GET")
-        data = await data.json()
-        pyscript.write('price{crypto.get('name')}',  data['symbol']+'/'+ data['price'])
-
-</py-script>
 
 
 <py-script output="{crypto.get('name')}">
@@ -54,9 +38,8 @@ def index_tm(cryptos):
     bre = bre.properties(width=700,height=400).interactive()
     bre
 </py-script>
-
-
 '''
+
     main = f'''
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +58,30 @@ def index_tm(cryptos):
     - pandas
     - altair
     </py-env>
-''' + cryptos_div +'''
+''' + cryptos_div +f'''
+
+<py-script>
+# importing
+from time import sleep
+from pyodide.http import pyfetch
+import asyncio
+
+link_list = []
+for i in {[i['name'] for i in cryptos]}:'''+'''
+    link_list.append({'name': i, 'url': f"https://api.binance.com/api/v3/ticker/price?symbol={i}USDT"})
+
+
+
+while True:
+    # requesting data from url using pyfetch
+    for i in link_list:
+        data = await pyfetch(url=i.get('url'), method="GET")
+        data = await data.json()
+        pyscript.write(f"Price_{i.get('name')}",  data['symbol']+'/'+ data['price'])
+
+</py-script>
+
+
 </body>
 </html>
 '''
