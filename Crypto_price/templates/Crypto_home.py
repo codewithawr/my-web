@@ -11,9 +11,6 @@ def index_tm(cryptos):
     <div id="{crypto.get('name')}"></div>
 </div>
 
-
-
-
 <py-script output="{crypto.get('name')}">
 
     from pyodide.http import pyfetch,open_url
@@ -69,7 +66,6 @@ import asyncio
 link_list = []
 for i in {[i['name'] for i in cryptos]}:'''+'''
     link_list.append({'name': i, 'url': f"https://api.binance.com/api/v3/ticker/price?symbol={i}USDT"})
-
 
 
 while True:
