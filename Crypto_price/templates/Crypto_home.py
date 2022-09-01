@@ -25,7 +25,7 @@ def index_tm(cryptos):
     crypto_data = pandas.read_csv(data)
     open_close_color = alt.condition("datum.Open <= datum.Close",alt.value("#06982d"),alt.value("#ae1325"))
 
-    base = alt.Chart(crypto_data).encode(alt.X('Date:T',axis=alt.Axis(format='%d-%m-%y',labelAngle=-45,title='Date in 2009' )),color=open_close_color)
+    base = alt.Chart(crypto_data).encode(alt.X('Date:T',axis=alt.Axis(format='%d-%m-%y',labelAngle=-45)),color=open_close_color)
     
     rul = base.mark_bar().encode(alt.Y('Open:Q'),alt.Y2('Close:Q'))
     
@@ -40,7 +40,7 @@ def index_tm(cryptos):
     for i,v in enumerate([i['name'] for i in cryptos]):
         link_ = link_+f'<a href= "#{i}">{v}</a><br>'
 
-    main = f'''
+    main = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +50,12 @@ def index_tm(cryptos):
     
     <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
     <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <style>
+        #ETH {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 
     <title>Document</title>
 </head>
