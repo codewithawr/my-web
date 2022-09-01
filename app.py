@@ -30,7 +30,7 @@ def upd_crypto():
 upd_crypto()
 
 scheduler = APScheduler()
-scheduler.add_job(func=upd_crypto, trigger='interval', id='job', seconds=43200)
+scheduler.add_job(func=upd_crypto, trigger='interval', id='job', seconds=3600)
 scheduler.start()
 
 app=Flask(__name__,template_folder='templates')
